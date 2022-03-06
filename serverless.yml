@@ -1,0 +1,29 @@
+service: vaccine-appts
+ 
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+ 
+custom:
+  wsgi:
+    app: app.app
+    packRequirements: false
+ 
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: us-east-2
+  lambdaHashingVersion: '20201221'
+ 
+functions:
+  app:
+    handler: wsgi.handler
+    events:      
+      - http:
+          path: /
+          method: ANY
+          # cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
