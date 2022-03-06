@@ -4,5 +4,3 @@ env/
 .DS_Store
 
 .env
-
-old-functions/
