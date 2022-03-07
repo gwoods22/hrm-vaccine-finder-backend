@@ -1,8 +1,10 @@
 service: vaccine-appts
+useDotenv: true
  
 plugins:
   - serverless-python-requirements
   - serverless-wsgi
+  - serverless-dotenv-plugin
  
 custom:
   wsgi:
@@ -18,7 +20,9 @@ provider:
  
 functions:
   app:
-    handler: wsgi.handler
+    handler: wsgi_handler.handler
+    environment:
+      GOOGLE_MAPS_API_KEY: ${env:GOOGLE_MAPS_API_KEY}
     events:      
       - http:
           path: /
