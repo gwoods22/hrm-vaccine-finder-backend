@@ -1,6 +1,7 @@
 node_modules/
 .DS_Store
 .env
+*.txt
 
 # Serverless
 .serverless/
@@ -8,5 +9,7 @@ wsgi_handler.py
 serverless_wsgi.py
 .serverless-wsgi
 
-# Python venv
+# Python
 env/
+*.pyc
+__pycache__/
