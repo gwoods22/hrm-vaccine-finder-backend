@@ -13,3 +13,6 @@ serverless_wsgi.py
 env/
 *.pyc
 __pycache__/
+
+# Old functions
+old-functions/
