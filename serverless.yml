@@ -1,4 +1,4 @@
-service: vaccine-appts
+service: vaccine-appts-backend
 useDotenv: true
  
 plugins:
@@ -13,8 +13,11 @@ custom:
 provider:
   name: aws
   runtime: python3.7
-  stage: dev
+  stage: prod
   region: us-east-2
+  apiGateway:
+    apiKeys:
+      - vaccine-appts-apikey
   iam:
     role:
       statements:
@@ -42,7 +45,28 @@ functions:
       - http:
           path: /
           method: ANY
-          # cors: true
+          private: true
+          cors: 
+            origin: '*'
+            headers:
+              - Access-Control-Allow-Headers
+              - Access-Control-Allow-Origin
+              - Content-Type
+              - X-Api-Key
+              - Test-Mode
+              - Cache-Locations
+              - All-Locations
       - http:
           path: /{proxy+}
           method: ANY
+          private: true
+          cors: 
+            origin: '*'
+            headers:
+              - Access-Control-Allow-Headers
+              - Access-Control-Allow-Origin
+              - Content-Type
+              - X-Api-Key
+              - Test-Mode
+              - Cache-Locations
+              - All-Locations         
