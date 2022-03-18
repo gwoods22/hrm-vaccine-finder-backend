@@ -21,6 +21,11 @@ headers = {
 appointments = Blueprint('appointments', __name__)
 
 def dst_offset_atlantic():
+    """ Determine if Atlantic timezone is in Daylight Savings Time
+
+    Returns:
+        int: current Atlantic offset including DST
+    """
     dt = datetime.utcnow()
     timezone = pytz.timezone('Canada/Atlantic')
     timezone_aware_date = timezone.localize(dt, is_dst=None)
@@ -30,6 +35,14 @@ def dst_offset_atlantic():
     return 3 if isDST else 4
 
 def get_local(utc_datetime):
+    """ Convert UTC datetime to Atlantic local time
+
+    Parameters:
+        utc_datetime (str): Datetime string to convert
+
+    Returns:
+        str: Locally formatted datetime string
+    """
     date = datetime.fromisoformat(utc_datetime.replace("Z", "+00:00"))
     now_timestamp = time.time()
     offset = datetime.fromtimestamp(now_timestamp) - datetime.utcfromtimestamp(now_timestamp)
@@ -40,6 +53,15 @@ def get_local(utc_datetime):
     return localDate.strftime("%b %d")+ ', ' + hourString + localDate.strftime(":%M") + timeSuffix
  
 def parse_appts(loc_id, appts):
+    """ Convert raw appointment data to minimal return format
+
+    Parameters:
+        loc_id (str): Location ID
+        appts (dict[]): Array of appointment objects
+
+    Returns:
+        (dict, int): Tuple containing appointments object and appointment count
+    """
     myAppts = []
     apptCount = 0
     
@@ -64,7 +86,12 @@ def parse_appts(loc_id, appts):
     }, apptCount
   
 @appointments.route("/appointments",methods=['POST'])
-def get_appointments():  
+def get_appointments():
+    """ Return available vaccine appointments based on passed location IDs
+    
+    Returns:
+        dict: Appointments response object
+    """
     test_mode = request.headers.get('test-mode') == 'true'
     body = request.get_json()  
 

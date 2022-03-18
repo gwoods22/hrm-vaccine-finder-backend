@@ -14,13 +14,24 @@ GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
 distances = Blueprint('distances', __name__)
 
-def get_map_distance(homeAddress, loc_id, rawAddress, saved_distances=False):
+def get_map_distance(homeAddress, loc_id, destinationAddress, saved_distances=False):
+    """ Determine road driving distance between 2 addresses
+
+    Parameters:
+        homeAddress (str): Address of origin point
+        loc_id (str): Associated location ID
+        destinationAddress (str): Destination address
+        saved_distances (bool): Flag for using saved distances from table or Google Maps API
+        
+    Returns:
+        (str, float): Tuple containing distance string and distance value
+    """
     table = dynamodb.Table('clinic-distances')
     
     directionsURL = 'https://maps.googleapis.com/maps/api/directions/json?{}'
     params = {
         'origin': homeAddress,
-        'destination': rawAddress,
+        'destination': destinationAddress,
         'key': GOOGLE_MAPS_API_KEY
     }
     
@@ -55,9 +66,13 @@ def get_map_distance(homeAddress, loc_id, rawAddress, saved_distances=False):
     except Exception as e:
         print(e)
 
-
 @distances.route("/distances",methods=['POST'])
 def get_distances():
+    """ Determine distance from 'home' field to each address in 'addresses'
+    
+    Returns:
+        dict: Distances response object
+    """
     saved_distances = request.headers.get('saved-distances') == 'true'
     body = request.get_json()
 

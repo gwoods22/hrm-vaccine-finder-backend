@@ -22,6 +22,11 @@ BUCKET_NAME = os.getenv('SAVED_VACCINE_DATA_BUCKET')
 
 @locations.route("/locations",methods=['GET'])
 def get_locations():  
+    """ Return vaccine appointment locations in Nova Scotia
+    
+    Returns:
+        dict: Locations response object
+    """
     getAllLocations = request.headers.get('all-locations') == 'true'
     test_mode = request.headers.get('test-mode') == 'true'
     
