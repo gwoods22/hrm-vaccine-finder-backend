@@ -91,10 +91,9 @@ def get_locations():
             loc['shortName'] = re.sub(r'\s\(.*\)', '', shortName)
             
         # Remove address from shortName field if necessary
-        # TODO uncomment
-        # street = loc['address'].split(' NS')[0]
-        # if street in loc['shortName']:
-        #     loc['shortName'] = loc['shortName'].replace(street, '')
+        street = loc['address'].split(' NS')[0]
+        if street in loc['shortName']:
+            loc['shortName'] = loc['shortName'].replace(street, '')
         
 
     return {
