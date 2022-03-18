@@ -63,7 +63,7 @@ def parse_appts(loc_id, appts):
         # 'allAppts': myAppts,
     }, apptCount
   
-@appointments.route("/appointments",methods=['GET','POST'])
+@appointments.route("/appointments",methods=['POST'])
 def get_appointments():  
     test_mode = request.headers.get('test-mode') == 'true'
     body = request.get_json()  
