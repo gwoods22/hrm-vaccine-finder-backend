@@ -43,6 +43,7 @@ def get_map_distance(homeAddress, loc_id, rawAddress, saved_distances=False):
     distance = distanceObj['text']
     rawDistance = int(distanceObj['value'])
     
+    try:
         table.put_item(
             Item={ 
                 'id': loc_id,
@@ -51,6 +52,9 @@ def get_map_distance(homeAddress, loc_id, rawAddress, saved_distances=False):
             }
         )
         return distance, rawDistance
+    except Exception as e:
+        print(e)
+
 
 @distances.route("/distances",methods=['GET','POST'])
 def get_distances():
