@@ -81,8 +81,7 @@ def parse_appts(loc_id, appts):
     return {
         'id': loc_id,
         'earliest': myAppts[0],
-        'appts': myAppts,
-        # 'allAppts': myAppts,
+        'allAppts': myAppts,
     }, apptCount
   
 @appointments.route("/appointments",methods=['POST'])
