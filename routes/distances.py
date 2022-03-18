@@ -14,7 +14,7 @@ GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
 
 distances = Blueprint('distances', __name__)
 
-def get_map_distance(homeAddress, loc_id, rawAddress, cache_locations=False):
+def get_map_distance(homeAddress, loc_id, rawAddress, saved_distances=False):
     table = dynamodb.Table('clinic-distances')
     
     directionsURL = 'https://maps.googleapis.com/maps/api/directions/json?{}'
@@ -24,7 +24,7 @@ def get_map_distance(homeAddress, loc_id, rawAddress, cache_locations=False):
         'key': GOOGLE_MAPS_API_KEY
     }
     
-    if cache_locations:
+    if saved_distances:
         query = table.query(
             KeyConditionExpression=Key('id').eq(loc_id),
         )
@@ -43,18 +43,18 @@ def get_map_distance(homeAddress, loc_id, rawAddress, cache_locations=False):
     distance = distanceObj['text']
     rawDistance = int(distanceObj['value'])
     
-    table.put_item(
-        Item={ 
-            'id': loc_id,
-            'distance': distance,
-            'rawDistance': rawDistance
-        }
-    )
-    return distance, rawDistance
+        table.put_item(
+            Item={ 
+                'id': loc_id,
+                'distance': distance,
+                'rawDistance': rawDistance
+            }
+        )
+        return distance, rawDistance
 
 @distances.route("/distances",methods=['GET','POST'])
-def get_distances():  
-    cache_locations = request.headers.get('cache-locations') == 'true'
+def get_distances():
+    saved_distances = request.headers.get('cache-locations') == 'true'
     body = request.get_json()
 
     result = body['addresses']
@@ -65,7 +65,7 @@ def get_distances():
             home, 
             result[i]['id'], 
             result[i]['mapsLocationString'],
-            cache_locations
+            saved_distances
         )
         result[i]['distance'] = apptDistance
         result[i]['rawDistance'] = apptRawDistance
