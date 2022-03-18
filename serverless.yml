@@ -54,7 +54,7 @@ functions:
               - Content-Type
               - X-Api-Key
               - Test-Mode
-              - Cache-Locations
+              - Saved-Distances
               - All-Locations
       - http:
           path: /{proxy+}
@@ -68,5 +68,5 @@ functions:
               - Content-Type
               - X-Api-Key
               - Test-Mode
-              - Cache-Locations
+              - Saved-Distances
               - All-Locations         

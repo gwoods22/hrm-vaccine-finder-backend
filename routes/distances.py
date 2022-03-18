@@ -58,7 +58,7 @@ def get_map_distance(homeAddress, loc_id, rawAddress, saved_distances=False):
 
 @distances.route("/distances",methods=['GET','POST'])
 def get_distances():
-    saved_distances = request.headers.get('cache-locations') == 'true'
+    saved_distances = request.headers.get('saved-distances') == 'true'
     body = request.get_json()
 
     result = body['addresses']
